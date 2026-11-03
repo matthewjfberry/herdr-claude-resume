@@ -121,7 +121,7 @@ POSIX `sh` and plain JavaScript, with no packages, no build step and no network 
 
 - A resume starts up to 2 seconds after the new shell, the mod's check interval.
 - The mod must run before the loss to stamp the shell. A session started while the app was closed, then lost before it opened, is not resumed.
-- Sessions already running when you install the plugin are labelled at their next prompt.
+- Claude Code loads hooks when a session starts, so sessions already running when you install the plugin are not covered. Restart them with `/exit` and `claude --continue`.
 - The resume is typed into the shell, so it lands in your shell history.
 - Tested on local terminals. A remote machine needs the plugin installed there too.
 
