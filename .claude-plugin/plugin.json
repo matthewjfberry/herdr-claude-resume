@@ -1,0 +1,10 @@
+{
+  "name": "herdr-claude-resume",
+  "version": "1.0.0",
+  "description": "Labels Herdr terminals with their Claude Code session, so the claude-resume mod can reopen it after a reboot.",
+  "author": {
+    "name": "Matt Berry"
+  },
+  "homepage": "https://github.com/matthewjfberry/herdr-claude-resume",
+  "license": "MIT"
+}

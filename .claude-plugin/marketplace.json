@@ -1,0 +1,13 @@
+{
+  "name": "herdr-claude-resume",
+  "owner": {
+    "name": "Matt Berry"
+  },
+  "plugins": [
+    {
+      "name": "herdr-claude-resume",
+      "source": "./",
+      "description": "Labels Herdr terminals with their Claude Code session, so the claude-resume mod can reopen it after a reboot."
+    }
+  ]
+}

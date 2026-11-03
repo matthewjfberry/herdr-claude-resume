@@ -1,0 +1,18 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test mods/claude-resume/plan.test.mjs
+      - run: shellcheck hooks/label.sh
+      - run: for f in .claude-plugin/*.json hooks/hooks.json mods/claude-resume/mod.json; do jq empty "$f"; done
