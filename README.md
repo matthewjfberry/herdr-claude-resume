@@ -93,6 +93,22 @@ herdr-app status                                         # claude-resume under "
 
 Start Claude in a Herdr terminal and send a prompt. Within two seconds, `hc get <terminal>` shows `claude.session`, `claude.cwd` and `claude.shell`.
 
+**4. Adopt sessions already open (optional)**
+
+Claude Code loads hooks when a session starts, so sessions running before the install never call the plugin. Adopt them once:
+
+```sh
+./herdr-claude-resume/adopt.sh
+```
+
+```
+t5  adopted web (265b74fd-df44-42dd-b0fb-206973e4e913)
+t6  already covered
+t7  skipped: no conversation saved yet
+```
+
+It reads each session's id from Claude Code's own `~/.claude/sessions/<pid>.json`. That file is internal to Claude Code, which is why only this one-off script relies on it, never the mod. Needs `jq`.
+
 ## Behaviour
 
 | When | What happens |
@@ -113,6 +129,7 @@ Start Claude in a Herdr terminal and send a prompt. Within two seconds, `hc get 
 | [`mods/claude-resume/plan.js`](mods/claude-resume/plan.js) | 33 | Every decision, as one pure function: stamp, resume or nothing |
 | [`mods/claude-resume/main.js`](mods/claude-resume/main.js) | 42 | Reads Herdr's terminals every 2 s and runs `hc` for each step |
 | [`mods/claude-resume/plan.test.mjs`](mods/claude-resume/plan.test.mjs) | 57 | `node:test` suite for `plan.js` |
+| [`adopt.sh`](adopt.sh) | 46 | One-off: labels sessions that were open before the install |
 | [`.claude-plugin/`](.claude-plugin) | | Plugin manifest and its one-plugin marketplace |
 
 POSIX `sh` and plain JavaScript, with no packages, no build step and no network access. Folder names are single-quoted and session ids must be UUIDs before anything reaches a shell.
@@ -121,7 +138,7 @@ POSIX `sh` and plain JavaScript, with no packages, no build step and no network 
 
 - A resume starts up to 2 seconds after the new shell, the mod's check interval.
 - The mod must run before the loss to stamp the shell. A session started while the app was closed, then lost before it opened, is not resumed.
-- Claude Code loads hooks when a session starts, so sessions already running when you install the plugin are not covered. Restart them with `/exit` and `claude --continue`.
+- Sessions already running at install time are covered only after [`adopt.sh`](#install) or a restart.
 - The resume is typed into the shell, so it lands in your shell history.
 - Tested on local terminals. A remote machine needs the plugin installed there too.
 
@@ -138,7 +155,7 @@ Then remove the `claude-resume` entry from your layout.
 
 ```sh
 node --test mods/claude-resume/plan.test.mjs
-shellcheck hooks/label.sh
+shellcheck hooks/label.sh adopt.sh
 herdr-app check mods/claude-resume
 ```
 

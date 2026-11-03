@@ -14,5 +14,5 @@ jobs:
         with:
           node-version: 22
       - run: node --test mods/claude-resume/plan.test.mjs
-      - run: shellcheck hooks/label.sh
+      - run: shellcheck hooks/label.sh adopt.sh
       - run: for f in .claude-plugin/*.json hooks/hooks.json mods/claude-resume/mod.json; do jq empty "$f"; done
