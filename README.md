@@ -46,7 +46,7 @@ sequenceDiagram
     M->>T: stamp claude.shell = shell pid
     Note over T: reboot, logout or core restart
     Note over T: new shell, same address, labels kept
-    M->>T: shell pid changed, at a prompt
+    T-->>M: shell pid changed, at a prompt
     M->>T: types: cd folder && claude --resume id
 ```
 
